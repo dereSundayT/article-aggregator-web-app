@@ -2,16 +2,19 @@ import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
 import {ArticleModel} from "../../models/articleModel";
 import {fetchArticles} from "./articleAction";
+import {ArticleApiResponseModel} from "../../models/model";
 
 export interface ArticleState {
     isArticleLoading: boolean;
     articles: ArticleModel[];
+    paginationLinks: ArticleApiResponseModel|null;
     error: string|null;
 }
 
 const initialState: ArticleState = {
     isArticleLoading: false,
     articles: [],
+    paginationLinks: null,
     error: null
 }
 
@@ -37,8 +40,9 @@ export const articleSlice = createSlice({
             })
             .addCase(fetchArticles.fulfilled, (state, action) => {
                 state.isArticleLoading = false;
-                // state.articles = action.payload;
-                state.articles = []
+                const {data,...paginationLinks} = action.payload;
+                state.articles = action.payload.data;
+                // state.paginationLinks = paginationLinks;
             })
             .addCase(fetchArticles.rejected, (state, action) => {
                 state.isArticleLoading = false;

@@ -12,11 +12,13 @@ const navs:NavigationModel[] = [
 
 export interface AppState {
     navigations: NavigationModel[]
+    token: string
 
 }
 
 const initialState: AppState = {
-    navigations : navs
+    navigations : navs,
+    token:"1|WnYC1yfIt9fSzMTgMhAK0K3vlSGfo2lfOhcSeDdE3f478d17"
 
 }
 

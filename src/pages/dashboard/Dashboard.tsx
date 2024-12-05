@@ -9,11 +9,8 @@ export const  Dashboard:React.FC = () =>{
 
     return (
         <DashboardLayoutWrapper pageTitle={"Articles Home"}>
-            <>
-                <ArticleFilter/>
-                <ArticleItems/>
-            </>
-
+            <ArticleFilter/>
+            <ArticleItems/>
         </DashboardLayoutWrapper>
     )
 }
