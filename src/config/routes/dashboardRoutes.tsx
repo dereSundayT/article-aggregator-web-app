@@ -1,7 +1,12 @@
 import {urls} from "../url";
-import {ArticleDetails, ArticleHome, UserPreferenceSettings} from "../../pages/dashboard";
+import {ArticleDetails, ArticleHome, Dashboard, UserPreferenceSettings} from "../../pages/dashboard";
 
 export const dashboardRoutes = [
+
+    {
+        url: urls.dashboard,
+        component: <Dashboard/>
+    },
 
     {
         url: urls.articles,

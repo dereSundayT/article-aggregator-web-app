@@ -6,6 +6,7 @@ export const urls = {
     login: '/login',
     register: '/register',
     //Dashboard
+    dashboard: `${dashboardPrefix}`,
     articles: `${dashboardPrefix}/articles`,
     articleDetails: `${dashboardPrefix}/articles/:id`,
     settings: `${dashboardPrefix}/settings`,
