@@ -9,6 +9,8 @@ export const urls = {
     dashboard: `${dashboardPrefix}`,
     articles: `${dashboardPrefix}/articles`,
     articleDetails: `${dashboardPrefix}/articles/:id`,
-    settings: `${dashboardPrefix}/settings`,
+
+    settings: `${dashboardPrefix}/user/settings`,
+    userProfile: `${dashboardPrefix}/user/profile`,
 
 }

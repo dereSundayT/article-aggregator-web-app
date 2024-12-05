@@ -4,6 +4,10 @@ import {Bars3Icon, BellIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems} from "@headlessui/react";
 import {urls} from "../../../config/url";
 
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../config/redux/store";
+import {handleNavigation} from "../../../config/redux/app/appSlice";
+
 
 
 const user = {
@@ -12,16 +16,12 @@ const user = {
     imageUrl:
         'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
 }
-
-const navigation = [
-    { name: 'Dashboard', href: urls.dashboard, current: true },
-    { name: 'Articles', href: urls.articles, current: false },
-]
 const userNavigation = [
-    { name: 'My Profile', href: '#' },
-    { name: 'Preference Settings', href: urls.settings },
-    { name: 'Sign out', href: '#' },
+    {name: 'My Profile', href: urls.userProfile},
+    {name: 'Preference Settings', href: urls.settings},
+    {name: 'Sign out', href: '#'},
 ]
+
 
 function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(' ')
@@ -29,6 +29,11 @@ function classNames(...classes: string[]) {
 
 
 export const DashboardNav: React.FC = () => {
+
+    const {navigations} = useSelector((state: RootState) => state.app)
+    const dispatch = useDispatch<AppDispatch>();
+
+
     return (
         <Disclosure as="nav" className="bg-gray-800">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -45,19 +50,22 @@ export const DashboardNav: React.FC = () => {
 
                         <div className="hidden md:block">
                             <div className="ml-10 flex items-baseline space-x-4">
-                                {navigation.map((item) => (
-                                    <Link
-                                        key={item.name}
-                                        to={item.href}
-                                        aria-current={item.current ? 'page' : undefined}
-                                        className={classNames(
-                                            item.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
-                                            'rounded-md px-3 py-2 text-sm font-medium',
-                                        )}
-                                    >
-                                        {item.name}
-                                    </Link>
-                                ))}
+                                {
+                                    navigations.map((navigation) => (
+                                        <Link
+                                            onClick={() =>  dispatch(handleNavigation(navigation))}
+                                            key={navigation.name}
+                                            to={navigation.href}
+                                            aria-current={navigation.current ? 'page' : undefined}
+                                            className={classNames(
+                                                navigation.current ? 'bg-gray-900 text-white' : 'text-gray-300 hover:bg-gray-700 hover:text-white',
+                                                'rounded-md px-3 py-2 text-sm font-medium',
+                                            )}
+                                        >
+                                            {navigation.name}
+                                        </Link>
+                                    ))
+                                }
                             </div>
                         </div>
                     </div>
@@ -116,7 +124,7 @@ export const DashboardNav: React.FC = () => {
 
             <DisclosurePanel className="md:hidden">
                 <div className="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-                    {navigation.map((item) => (
+                    {navigations.map((item) => (
                         <DisclosureButton
                             key={item.name}
                             as="a"

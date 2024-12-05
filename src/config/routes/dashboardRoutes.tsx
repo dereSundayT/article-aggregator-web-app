@@ -1,5 +1,5 @@
 import {urls} from "../url";
-import {ArticleDetails, ArticleHome, Dashboard, UserPreferenceSettings} from "../../pages/dashboard";
+import {ArticleDetails, ArticleHome, Dashboard, UserPreferenceSettings, UserProfile} from "../../pages/dashboard";
 
 export const dashboardRoutes = [
 
@@ -21,6 +21,10 @@ export const dashboardRoutes = [
     {
         url: urls.settings,
         component: <UserPreferenceSettings/>
+    },
+    {
+        url: urls.userProfile,
+        component: <UserProfile/>
     },
 
 ]
