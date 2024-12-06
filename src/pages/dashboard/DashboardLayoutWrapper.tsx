@@ -1,7 +1,9 @@
 import React from "react";
 import {DashboardNav} from "./components";
-
-
+import {useSelector} from "react-redux";
+import {RootState} from "../../config/redux/store";
+import {Navigate} from "react-router-dom";
+import {urls} from "../../config/url";
 
 
 interface DashboardLayoutWrapperProps {
@@ -9,9 +11,13 @@ interface DashboardLayoutWrapperProps {
     pageTitle: string
 }
 
-
-
 export const DashboardLayoutWrapper:React.FC<DashboardLayoutWrapperProps> = ({children,pageTitle}) => {
+    const {token } = useSelector((state: RootState) => state.user);
+
+
+    if(!token){
+        return <Navigate to={urls.login}/>
+    }
     return (
         <>
             <div className="min-h-full">

@@ -11,7 +11,8 @@ import {ArticleFilterCtaButton} from "./ArticleFilterCtaButton";
 import {GeneralInputField, TextInputField} from "../../../../component/form";
 
 export const ArticleFilter = () => {
-    const { token, categories, sources, authors } = useSelector((state: RootState) => state.app);
+    const { categories, sources, authors } = useSelector((state: RootState) => state.app);
+    const { token } = useSelector((state: RootState) => state.user);
     const { isArticleModalOpen, articleFilter } = useSelector((state: RootState) => state.articles);
     const dispatch = useDispatch<AppDispatch>();
 

@@ -1,15 +1,17 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {getUserPreference, loginUser, registerUser, updateUserPreference} from "./userAction";
-import {UserPreferenceModel, UserPreferenceProps} from "../../models/userModel";
+import {LoginRespModel, UserModel, UserPreferenceModel, UserPreferenceProps} from "../../models/userModel";
 
 
 export interface UserState {
     isUserLoading: boolean;
-    user?: any;
+    user: UserModel|null;
     preferences?: UserPreferenceModel;
     error_msg: string;
     success_msg: string;
-    userErrors: any
+    userErrors: any;
+    token: string;
+
 }
 
 const initialState: UserState = {
@@ -18,7 +20,8 @@ const initialState: UserState = {
     preferences: UserPreferenceProps,
     error_msg: '',
     success_msg: '',
-    userErrors: null
+    userErrors: null,
+    token:'',
 
 }
 
@@ -55,9 +58,13 @@ export const userSlice = createSlice({
                 state.userErrors = null;
                 state.success_msg = '';
             })
-            .addCase(loginUser.fulfilled, (state, action) => {
+            .addCase(loginUser.fulfilled, (state, action:PayloadAction<LoginRespModel>) => {
                 state.isUserLoading = false;
+                const {message,data} = action.payload
                 state.success_msg = action.payload.message;
+                state.user =  data.user;
+                state.success_msg = message;
+                state.token = data.token;
             })
             .addCase(loginUser.rejected, (state, action: PayloadAction<any>) => {
                 const {message, data} = action.payload;

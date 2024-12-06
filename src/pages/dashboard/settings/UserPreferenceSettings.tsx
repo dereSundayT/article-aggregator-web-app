@@ -11,8 +11,8 @@ import { UserPreferenceFormModel } from "../../../config/models/userModel";
 
 export const UserPreferenceSettings: React.FC = () => {
     const dispatch = useDispatch<AppDispatch>();
-    const { categories, sources, authors, token } = useSelector((state: RootState) => state.app);
-    const { preferences } = useSelector((state: RootState) => state.user);
+    const { categories, sources, authors } = useSelector((state: RootState) => state.app);
+    const { preferences,token } = useSelector((state: RootState) => state.user);
 
     const { register, handleSubmit } = useForm<UserPreferenceFormModel>();
 

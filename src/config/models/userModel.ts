@@ -1,5 +1,3 @@
-
-
 export interface RegistrationReqPayloadModel{
     name:string;
     email:string;
@@ -10,18 +8,29 @@ export interface RegistrationReqPayloadModel{
 export interface LoginReqPayloadModel{
     email:string;
     password:string;
-
 }
-
-
 
 export interface LoginReqPayloadModel{
     email:string;
     password:string;
 }
 
-export interface LoginResPayloadModel {
-    token: string;
+export interface LoginRespModel{
+    status :boolean;
+    data :{
+        user: UserModel;
+        token: string;
+    }
+    message:string;
+}
+
+
+
+
+
+export interface UserModel{
+    name:string;
+    email:string;
 }
 
 
