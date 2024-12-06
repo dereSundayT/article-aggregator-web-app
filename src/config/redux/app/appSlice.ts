@@ -2,6 +2,8 @@ import type {PayloadAction} from '@reduxjs/toolkit'
 import {createSlice} from '@reduxjs/toolkit'
 import {NavigationModel} from "../../models/model";
 import {urls} from "../../url";
+import {AuthorModel, CategoryModel, SourceModel} from "../../models/articleModel";
+import {fetchAdditionalData} from "./appAction";
 
 const navs:NavigationModel[] = [
     { name: 'Dashboard', href: urls.dashboard, current: true },
@@ -13,12 +15,21 @@ const navs:NavigationModel[] = [
 export interface AppState {
     navigations: NavigationModel[]
     token: string
+    categories: CategoryModel[]
+    authors: AuthorModel[]
+    sources: SourceModel[]
+    isAppLoading: boolean
+
 
 }
 
 const initialState: AppState = {
     navigations : navs,
-    token:"1|WnYC1yfIt9fSzMTgMhAK0K3vlSGfo2lfOhcSeDdE3f478d17"
+    token:"1|WnYC1yfIt9fSzMTgMhAK0K3vlSGfo2lfOhcSeDdE3f478d17",
+    categories:[],
+    authors:[],
+    sources:[],
+    isAppLoading: false
 
 }
 
@@ -40,6 +51,22 @@ export const appSlice = createSlice({
         //End Navigation
 
     },
+    extraReducers: (builder) => {
+        builder
+            .addCase(fetchAdditionalData.pending, (state) => {
+                state.isAppLoading = true;
+            })
+            .addCase(fetchAdditionalData.fulfilled, (state, action) => {
+                state.isAppLoading = false;
+                state.categories = action.payload.categories
+                state.authors = action.payload.authors
+                state.sources = action.payload.sources
+            })
+            .addCase(fetchAdditionalData.rejected, (state) => {
+                state.isAppLoading = false;
+            })
+        //::
+    }
 })
 
 

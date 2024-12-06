@@ -1,36 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import {ArticleModel} from "../../models/articleModel";
+import {
+    ArticleApiResponseModel,
+    ArticleFilterModel, ArticleFilterProps,
+    ArticleModel,
+    ArticlePaginationModel
+} from "../../models/articleModel";
 import {fetchArticles} from "./articleAction";
-import {ArticleApiResponseModel} from "../../models/model";
+
 
 export interface ArticleState {
     isArticleLoading: boolean;
+    articleFilter : ArticleFilterModel;
     articles: ArticleModel[];
-    paginationLinks: ArticleApiResponseModel|null;
+    paginationLinks: ArticlePaginationModel|null;
     error: string|null;
+    isArticleModalOpen: boolean;
 }
 
 const initialState: ArticleState = {
     isArticleLoading: false,
     articles: [],
     paginationLinks: null,
-    error: null
+    error: null,
+    isArticleModalOpen: false,
+    articleFilter:ArticleFilterProps
 }
 
 export const articleSlice = createSlice({
     name: 'articles',
     initialState,
     reducers: {
-        increment: (state) => {
-
+        handleArticleModal: (state) => {
+            state.isArticleModalOpen = !state.isArticleModalOpen;
         },
-        decrement: (state) => {
-
-        },
-        incrementByAmount: (state, action: PayloadAction<number>) => {
-
-        },
+        handleArticleFilter: (state, action: PayloadAction<ArticleFilterModel>) => {
+            state.articleFilter = action.payload;
+        }
     },
     extraReducers: (builder) => {
         //Get Articles
@@ -40,9 +46,10 @@ export const articleSlice = createSlice({
             })
             .addCase(fetchArticles.fulfilled, (state, action) => {
                 state.isArticleLoading = false;
-                const {data,...paginationLinks} = action.payload;
-                state.articles = action.payload.data;
-                // state.paginationLinks = paginationLinks;
+                 const {data, pagination} = action.payload as ArticleApiResponseModel;
+                state.articles = data;
+                console.log(pagination)
+                state.paginationLinks = pagination;
             })
             .addCase(fetchArticles.rejected, (state, action) => {
                 state.isArticleLoading = false;
@@ -53,6 +60,6 @@ export const articleSlice = createSlice({
 })
 
 
-export const { increment, decrement, incrementByAmount } = articleSlice.actions
+export const {handleArticleModal,handleArticleFilter} = articleSlice.actions
 
 export default articleSlice.reducer

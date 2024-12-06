@@ -11,7 +11,7 @@ interface ArticleItemProps {
 export const ArticleItem: React.FC<ArticleItemProps> = ({article}) => {
     return (
         <>
-            <article key={article.id} className="flex max-w-xl flex-col items-start justify-between">
+            <article key={article.id} className="  border border-gray-100 px-5 py-2 flex max-w-xl flex-col items-start justify-between">
                 <div className="flex items-center gap-x-4 text-xs">
                     <time dateTime={article.published_at} className="text-gray-500">
                         {article.published_at}

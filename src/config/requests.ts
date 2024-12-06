@@ -1,33 +1,36 @@
 import axios from "axios";
 import {ApiResponseModel} from "./models/model";
 
-const getHeaders = (token: string) => {
+const getHeaders = (token: string, queryParams: any = null) => {
     return {
         headers: {
             'Content-type': 'application/json',
             Accept: 'application/json',
-            ...(token && {Authorization: `Bearer ${token}`})
+            ...(token && { Authorization: `Bearer ${token}` }),
         },
+        ...(queryParams && { params: queryParams }), // Add queryParams if present
     };
 };
 
-
 /**
  * Get Request
- * @param token
- * @param url
+ * @param token - Authorization token
+ * @param url - Endpoint URL
+ * @param queryParam - Query parameters for the request
  */
-export const getRequest = async (token: string, url: string): Promise<ApiResponseModel> => {
-    const options = getHeaders(token);
+export const getRequest = async (token: string, url: string, queryParam: any = null): Promise<ApiResponseModel> => {
+    const options = getHeaders(token, queryParam);
     try {
         const res = await axios.get(url, options);
+
         if (res.status >= 200 && res.status <= 299) {
             return res.data as ApiResponseModel;
         }
+
         return {
             status: false,
             message: 'Unexpected response status',
-            data: null
+            data: null,
         };
 
     } catch (error: any) {
@@ -36,7 +39,7 @@ export const getRequest = async (token: string, url: string): Promise<ApiRespons
                 return {
                     status: false,
                     message: 'Unauthenticated',
-                    data: null
+                    data: null,
                 };
             }
 
@@ -44,15 +47,14 @@ export const getRequest = async (token: string, url: string): Promise<ApiRespons
             return {
                 status: false,
                 message: msg,
-                data: null
+                data: null,
             };
-
         }
+
         return {
             status: false,
             message: error.message,
-            data: null
+            data: null,
         };
-
     }
 };

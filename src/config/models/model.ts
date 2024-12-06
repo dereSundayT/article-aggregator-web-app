@@ -5,11 +5,7 @@ export interface ApiResponseModel {
     data: any;
 }
 
-export interface ArticleApiResponseModel {
-    status: boolean;
-    message: string;
-    data: any;
-}
+
 
 export interface NavigationModel {
     name: string;
