@@ -1,8 +1,30 @@
 import React from 'react';
 import {AuthLayoutWrapper} from "./layout/AuthLayoutWrapper";
 import {urls} from "../../config/url";
+import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
+import {AppDispatch, RootState} from "../../config/redux/store";
+import {Spinner, SuccessMessage} from "../../component";
+import {useForm} from "react-hook-form";
+import {LoginReqPayloadModel} from "../../config/models/userModel";
+import {loginUser} from "../../config/redux/user/userAction";
+import {Button, GeneralInputField, PasswordInputField} from "../../component/form";
 
 export const Login: React.FC = () => {
+    const {isUserLoading, userErrors, error_msg, success_msg} = useSelector((state: RootState) => state.user);
+    const {register, handleSubmit, formState: {errors}, reset} = useForm<LoginReqPayloadModel>();
+    const navigate = useNavigate()
+    const dispatch = useDispatch<AppDispatch>();
+
+    const onSubmit = async (data: LoginReqPayloadModel) => {
+        const result = await dispatch(loginUser(data));
+        if (loginUser.fulfilled.match(result)) {
+            reset();
+            navigate(urls.dashboard);
+        }
+    };
+
+
     return (
         <AuthLayoutWrapper
             pageTitle={"Sign in to your account"}
@@ -10,53 +32,33 @@ export const Login: React.FC = () => {
             actionLink={urls.register}
             actionLinkText={"Register"}>
 
-            <form action="#" method="POST" className="space-y-6">
-                <div>
-                    <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-                        Email address
-                    </label>
-                    <div className="mt-2">
-                        <input
-                            id="email"
-                            name="email"
-                            type="email"
-                            required
-                            autoComplete="email"
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                    </div>
-                </div>
+            {success_msg && <SuccessMessage message={success_msg}/>}
 
-                <div>
-                    <div className="flex items-center justify-between">
-                        <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-                            Password
-                        </label>
-                        <div className="text-sm">
-                            <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                Forgot password?
-                            </a>
-                        </div>
-                    </div>
-                    <div className="mt-2">
-                        <input
-                            id="password"
-                            name="password"
-                            type="password"
-                            required
-                            autoComplete="current-password"
-                            className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                        />
-                    </div>
-                </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <GeneralInputField inputType={'email'} register={register} isRequired={true} name={'email'}
+                                   label={'Email address'} error={errors.email?.message}/>
 
-                <div>
-                    <button
-                        type="submit"
-                        className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                    >
-                        Sign in
-                    </button>
+                <PasswordInputField
+                    showForgotPassword={true}
+                    register={register}
+                    label={'Password'}
+                    name={"password"}
+                    error={
+                        errors.password?.message
+                            ?
+                            errors.password?.message
+                            :
+                            userErrors?.password?.[0] ?? ''
+                    }
+                />
+
+
+                <div className={'mt-3'}>
+                    {
+                        isUserLoading
+                            ? <Spinner/>
+                            : <Button actionType={"submit"} btnText={"Sign in"} className={'btn-primary'}/>
+                    }
                 </div>
             </form>
 

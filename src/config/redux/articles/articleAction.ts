@@ -9,7 +9,7 @@ import {ArticleApiResponseModel, ArticleReqPayloadModel} from "../../models/arti
 
 export const fetchArticles = createAsyncThunk("article/fetchArticles", async (payload:ArticleReqPayloadModel,thunkAPI) => {
 
-    const resp :ApiResponseModel = await getRequest(payload.token, remoteUrl.articles,payload.params)
+    const resp :ApiResponseModel = await getRequest(payload.token, payload.url,payload.params)
 
     if(resp.status){
         const {data,...pagination} = resp.data

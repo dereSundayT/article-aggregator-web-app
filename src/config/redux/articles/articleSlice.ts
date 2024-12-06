@@ -48,7 +48,6 @@ export const articleSlice = createSlice({
                 state.isArticleLoading = false;
                  const {data, pagination} = action.payload as ArticleApiResponseModel;
                 state.articles = data;
-                console.log(pagination)
                 state.paginationLinks = pagination;
             })
             .addCase(fetchArticles.rejected, (state, action) => {

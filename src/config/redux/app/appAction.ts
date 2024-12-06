@@ -25,7 +25,6 @@ export const fetchAdditionalData = createAsyncThunk("app/fetchArticles", async (
         }
         return thunkAPI.rejectWithValue(null)
     } catch (error) {
-        console.error("Error fetching data:", error);
         return thunkAPI.rejectWithValue(null)
     }
 

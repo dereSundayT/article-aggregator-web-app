@@ -1,67 +1,73 @@
 import React from "react";
-import {urls} from "../../config/url";
-import {AuthLayoutWrapper} from "./layout/AuthLayoutWrapper";
+import { urls } from "../../config/url";
+import { AuthLayoutWrapper } from "./layout/AuthLayoutWrapper";
+import { Button, GeneralInputField, PasswordInputField } from "../../component/form";
+import { useForm } from "react-hook-form";
+import { RegistrationReqPayloadModel } from "../../config/models/userModel";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "../../config/redux/store";
+import { registerUser } from "../../config/redux/user/userAction";
+import { Spinner } from "../../component";
+import {useNavigate} from "react-router-dom";
 
+export const Register: React.FC = () => {
+    const { isUserLoading,userErrors,error_msg } = useSelector((state: RootState) => state.user);
+    const { register, handleSubmit,watch, formState: { errors }, reset } = useForm<RegistrationReqPayloadModel>();
+    const passwordWatch = watch('password');
+    const dispatch = useDispatch<AppDispatch>();
+    const navigate = useNavigate()
 
-export const Register:React.FC = () => {
-  return (
-      <AuthLayoutWrapper
-          pageTitle={"Create a new account"}
-          callToActionText={"Already a member?"}
-          actionLink={urls.login}
-          actionLinkText={"Login"}>
+    const onSubmit = async (data: RegistrationReqPayloadModel) => {
+        const result = await dispatch(registerUser(data));
+        if (registerUser.fulfilled.match(result)) {
+            reset();
+            navigate(urls.login);
+        }
+    };
 
-          <form action="#" method="POST" className="space-y-6">
-              <div>
-                  <label htmlFor="email" className="block text-sm/6 font-medium text-gray-900">
-                      Email address
-                  </label>
-                  <div className="mt-2">
-                      <input
-                          id="email"
-                          name="email"
-                          type="email"
-                          required
-                          autoComplete="email"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      />
-                  </div>
-              </div>
+    return (
+        <AuthLayoutWrapper
+            pageTitle={"Create a new account"}
+            callToActionText={"Already a member?"}
+            actionLink={urls.login}
+            actionLinkText={"Login"}>
 
-              <div>
-                  <div className="flex items-center justify-between">
-                      <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">
-                          Password
-                      </label>
-                      <div className="text-sm">
-                          <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                              Forgot password?
-                          </a>
-                      </div>
-                  </div>
-                  <div className="mt-2">
-                      <input
-                          id="password"
-                          name="password"
-                          type="password"
-                          required
-                          autoComplete="current-password"
-                          className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                      />
-                  </div>
-              </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
+                <GeneralInputField inputType={'text'} register={register} isRequired={true} name={'name'} label={'Name'}
+                                   error={errors.name?.message ?? ''}/>
+                <GeneralInputField inputType={'email'} register={register} isRequired={true} name={'email'}
+                                   label={'Email address'} error={errors.email?.message ?? ''}/>
 
-              <div>
-                  <button
-                      type="submit"
-                      className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                  >
-                    Create Account
-                  </button>
-              </div>
-          </form>
+                <PasswordInputField
+                    showForgotPassword={false}
+                    register={register}
+                    label={'Password'}
+                    name={"password"}
+                    error={
+                    errors.password?.message
+                        ?
+                        errors.password?.message
+                        :
+                        userErrors?.password?.[0] ?? ''
+                }
+                />
+                <PasswordInputField
+                    showForgotPassword={false}
+                    register={register}
+                    label={'Confirm Password'}
+                    name={"password_confirmation"}
+                    error={errors.password_confirmation?.message ?? ''}
+                    passwordWatch={passwordWatch}
+                />
 
-      </AuthLayoutWrapper>
-  );
-}
-
+                <div className={'mt-3'}>
+                    {
+                        isUserLoading
+                            ? <Spinner/>
+                            : <Button actionType={"submit"} btnText={"Create Account"} className={'btn-primary'}/>
+                    }
+                </div>
+            </form>
+        </AuthLayoutWrapper>
+    );
+};

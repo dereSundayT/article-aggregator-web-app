@@ -1,4 +1,5 @@
 import React from "react";
+import {FormError} from "./FormError";
 
 interface GeneralInputFieldProps {
     inputType: string
@@ -27,16 +28,15 @@ export const GeneralInputField:React.FC<GeneralInputFieldProps> = ({register,isR
                                     value: isRequired,
                                     message: `${label} is required`
                                 },
-                                minLength: { value: minLength, message: `${label} is too Short` }
+                                minLength: { value: minLength, message: `${label} is too Short` },
                             }
                         )}
                         id={name}
                         type={inputType}
-                        className={`${error?' border border-red-500':'focus:outline-indigo-600'} block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2  sm:text-sm/6
-                        `}
+                        className={`${error ? 'input-error':'outline outline-1 -outline-offset-1 focus:outline-indigo-600 outline-gray-300'} input`}
                     />
 
-                    {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                    {error && <FormError error={error} />}
                 </div>
             </div>
         </>

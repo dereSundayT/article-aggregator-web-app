@@ -12,14 +12,15 @@ import {remoteUrl} from "../../../../config/url";
 
 
 export const ArticleItems: React.FC = () => {
-    const {articles, isArticleLoading, error,paginationLinks} = useSelector((state: RootState) => state.articles)
+    const {articles, isArticleLoading, error,paginationLinks,articleFilter} = useSelector((state: RootState) => state.articles)
     const {token} = useSelector((state: RootState) => state.app)
     const dispatch = useDispatch<AppDispatch>();
 
+    //Handle Pagination link clicked
     const handlePagination = (url:string) => {
         if(url){
             console.log(url)
-            // dispatch(fetchArticles({url:remoteUrl.articles,token, params: null}))
+            dispatch(fetchArticles({url,token, params: articleFilter}))
         }
     }
 
