@@ -10,9 +10,10 @@ interface GeneralInputFieldProps {
     error?: string
     defaultValue ?: string
     onChange ?: any
+    readonly ?: boolean
 }
 
-export const GeneralInputField:React.FC<GeneralInputFieldProps> = ({register,name,label,error,defaultValue,onChange,inputType}) => {
+export const GeneralInputField:React.FC<GeneralInputFieldProps> = ({register,name,label,error,defaultValue,onChange,inputType,readonly}) => {
     return (
         <>
             <div className="sm:col-span-3">
@@ -22,6 +23,8 @@ export const GeneralInputField:React.FC<GeneralInputFieldProps> = ({register,nam
                 <div className="mt-2">
 
                     <input
+                        readOnly={readonly}
+                        // disabled={readonly}
                         defaultValue={defaultValue}
                         {...register(name,{
                             onChange: onChange ? (e:any) => onChange(name,e.target.value) : undefined

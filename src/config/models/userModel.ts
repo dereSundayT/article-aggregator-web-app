@@ -33,7 +33,21 @@ export interface UserModel{
     email:string;
 }
 
+export interface UpdateUserProfilePayloadModel{
+    token:string;
+    data:{
+        name:string
+    };
+}
 
+export interface UpdateUserProfileRespModel{
+    status:boolean;
+    data:{
+        name:string
+        email:string
+    };
+    message:string;
+}
 
 export interface UpdatePreferencePayloadModel{
     token:string;

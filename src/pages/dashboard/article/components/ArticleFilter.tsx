@@ -60,7 +60,6 @@ export const ArticleFilter = () => {
 
                     <div className="flex flex-col col-span-4">
                         <GeneralInputField
-                            //mt-1 p-2 border border-gray-300 rounded-md
                             defaultValue={articleFilter.keywords}
                             register={register}
                             name={"keywords"}

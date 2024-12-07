@@ -2,7 +2,12 @@ import {createAsyncThunk} from "@reduxjs/toolkit";
 import {ApiResponseModel} from "../../models/model";
 import {getRequest, patchRequest, postRequest} from "../../requests";
 import {remoteUrl} from "../../url";
-import {LoginRespModel, RegistrationReqPayloadModel, UpdatePreferencePayloadModel} from "../../models/userModel";
+import {
+    LoginRespModel,
+    RegistrationReqPayloadModel,
+    UpdatePreferencePayloadModel,
+    UpdateUserProfilePayloadModel, UpdateUserProfileRespModel
+} from "../../models/userModel";
 
 
 
@@ -47,6 +52,17 @@ export const updateUserPreference = createAsyncThunk("user/updateUserPreference"
 
     if (resp.status) {
         return resp.data
+    }
+    // return resp
+    return thunkAPI.rejectWithValue(resp)
+
+})
+
+export const updateUserProfile = createAsyncThunk("user/updateUserProfile", async (payload:UpdateUserProfilePayloadModel, thunkAPI) => {
+    const resp: ApiResponseModel = await patchRequest(payload.token, remoteUrl.user, payload.data)
+
+    if (resp.status) {
+        return resp as UpdateUserProfileRespModel
     }
     // return resp
     return thunkAPI.rejectWithValue(resp)

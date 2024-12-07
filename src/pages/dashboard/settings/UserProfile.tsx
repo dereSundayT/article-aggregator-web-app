@@ -1,51 +1,70 @@
 import React from "react";
 import {DashboardLayoutWrapper} from "../DashboardLayoutWrapper";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Button, EmailInputField, GeneralInputField} from "../../../component/form";
+import {Button, GeneralInputField} from "../../../component/form";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../config/redux/store";
+import {userProfileValidationSchema} from "../../../config/form/validation";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {UserModel} from "../../../config/models/userModel";
+import {updateUserProfile} from "../../../config/redux/user/userAction";
+import {ErrorMessage, Spinner, SuccessMessage} from "../../../component";
+import {clearErrorMessageFromBackend} from "../../../config/redux/user/userSlice";
 
 
-interface Inputs  {
-    email: string;
-    last_name: string;
-    first_name: string;
-}
+
 
 export const UserProfile: React.FC = () => {
-    const {register, handleSubmit, watch, formState: {errors}} = useForm<Inputs>();
+    // Setup useForm
+    const {register, handleSubmit, formState: {errors}} = useForm<UserModel>({resolver: yupResolver(userProfileValidationSchema)});
+    const dispatch = useDispatch<AppDispatch>();
+    // Get user state
+    const {token,user,isUserLoading,success_msg,error_msg,userErrors} = useSelector((state: RootState) => state.user);
 
-    const onSubmit: SubmitHandler<Inputs> = (data) => {
-        console.log(data);
+    const onSubmit: SubmitHandler<UserModel> = (data) => {
+        const {name} = data;
+        dispatch(updateUserProfile({token, data:{name}}))
+    }
+
+    const clearErrorMessage = (fieldName:string,fieldValue:any) => {
+        dispatch(clearErrorMessageFromBackend(fieldName))
     }
 
     return (
         <DashboardLayoutWrapper pageTitle={"User Profile"}>
+
+            {success_msg && <SuccessMessage message={success_msg}/>}
+            {error_msg && <ErrorMessage message={error_msg}/>}
+
             <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="space-y-12">
                     <div className="border-b border-gray-900/10 pb-12">
                         <h2 className="text-base/7 font-semibold text-gray-900">Personal Information</h2>
-                        <p className="mt-1 text-sm/6 text-gray-600">Use a permanent address where you can receive mail.</p>
+                        <p className="mt-1 text-sm/6 text-gray-600">Update personal details</p>
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-
                             <GeneralInputField
-                                label={"First name"}
-                                name={"first_name"}
+                                defaultValue={user?.name}
+                                label={"Name"}
+                                name={"name"}
                                 register={register}
-                                key={"first_name"}
-                                error={errors.first_name?.message}
+                                key={"name"}
+
+                                onChange={userErrors?.name && clearErrorMessage}
+                                error={
+                                    errors.name?.message
+                                        ?
+                                        errors.name?.message
+                                        :
+                                        userErrors?.name?.[0] ?? ''
+                                }
                                 inputType={"text"}
                             />
 
-                            <GeneralInputField
-                                label={"Last name"}
-                                name={"last_name"}
-                                register={register}
-                                key={"last_name"}
-                                error={errors.last_name?.message}
-                                inputType={"text"}
-                            />
 
                             <GeneralInputField
+                                readonly={true}
+                                defaultValue={user?.email}
                                 label={"Email address"}
                                 name={"email"}
                                 register={register}
@@ -54,7 +73,6 @@ export const UserProfile: React.FC = () => {
                                 inputType={"email"}
                             />
 
-
                         </div>
                     </div>
 
@@ -62,8 +80,12 @@ export const UserProfile: React.FC = () => {
                 </div>
 
                 <div className="mt-6 flex items-center justify-end gap-x-6">
-                   <Button actionType={"reset"} btnText={"Cancel"}  className="text-sm/6 font-semibold text-gray-900"/>
-                   <Button actionType={"submit"} btnText={"Save"}/>
+                    {
+                        isUserLoading ?
+                            <Spinner/>
+                            :
+                            <Button actionType={"submit"} btnText={"Save"}/>
+                    }
                 </div>
             </form>
         </DashboardLayoutWrapper>

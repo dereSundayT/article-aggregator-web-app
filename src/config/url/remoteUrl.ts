@@ -11,5 +11,6 @@ export const remoteUrl ={
     authors: `${baseUrl}/authors`,
     //User
     preference: `${baseUrl}/user/preference`,
+    user: `${baseUrl}/user`,
 
 }

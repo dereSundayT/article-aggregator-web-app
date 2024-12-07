@@ -1,5 +1,5 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {getUserPreference, loginUser, registerUser, updateUserPreference} from "./userAction";
+import {getUserPreference, loginUser, registerUser, updateUserPreference, updateUserProfile} from "./userAction";
 import {LoginRespModel, UserModel, UserPreferenceModel, UserPreferenceProps} from "../../models/userModel";
 
 
@@ -80,8 +80,28 @@ export const userSlice = createSlice({
             })
 
 
+        //Update User Profile
+        builder
+            .addCase(updateUserProfile.pending, (state) => {
+                state.isUserLoading = true;
+                state.error_msg = '';
+                state.userErrors = null;
+                state.success_msg = '';
+            })
+            .addCase(updateUserProfile.fulfilled, (state, action) => {
+                state.isUserLoading = false;
+                state.success_msg = action.payload.message;
+                state.user = action.payload.data;
+            })
+            .addCase(updateUserProfile.rejected, (state,action:PayloadAction<any>) => {
+                state.isUserLoading = false;
+                const {message, data} = action.payload;
+                state.error_msg = message ?? "An error occurred";
+                state.userErrors = data ?? null;
+                state.success_msg = '';
+            })
 
-        //::::::: Get User Preference
+        //*********::::::: Get User Preference :::::::::::::::::::::::::::::::::::*******************
         builder
             .addCase(getUserPreference.pending, (state) => {
                 state.isUserLoading = true;
@@ -93,13 +113,17 @@ export const userSlice = createSlice({
                 state.isUserLoading = false;
                 state.preferences = action.payload;
             })
-            .addCase(getUserPreference.rejected, (state) => {
+            .addCase(getUserPreference.rejected, (state,action:PayloadAction<any>) => {
                 state.isUserLoading = false;
+                const {message, data} = action.payload;
+                state.error_msg = message ?? "An error occurred";
+                state.userErrors = data ?? null;
+                state.success_msg = '';
             })
 
 
 
-        //Update User Preference
+        //*********:::::::Update User Preference :::::::::::::::::::::::::::::::::::*******************
         builder
             .addCase(updateUserPreference.pending, (state) => {
                 state.isUserLoading = true;
