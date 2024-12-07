@@ -1,6 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {getUserPreference, loginUser, registerUser, updateUserPreference, updateUserProfile} from "./userAction";
-import {LoginRespModel, UserModel, UserPreferenceModel, UserPreferenceProps} from "../../models/userModel";
+import {
+    LoginRespModel,
+    UpdatePreferenceRespModel,
+    UserModel,
+    UserPreferenceModel,
+    UserPreferenceProps
+} from "../../models/userModel";
 
 
 export interface UserState {
@@ -127,13 +133,22 @@ export const userSlice = createSlice({
         builder
             .addCase(updateUserPreference.pending, (state) => {
                 state.isUserLoading = true;
+                state.error_msg = '';
+                state.userErrors = null;
+                state.success_msg = '';
             })
-            .addCase(updateUserPreference.fulfilled, (state, action) => {
+            .addCase(updateUserPreference.fulfilled, (state, action:PayloadAction<UpdatePreferenceRespModel>) => {
                 state.isUserLoading = false;
-                state.preferences = action.payload;
+                const {message,data} = action.payload
+                state.success_msg = message;
+                state.preferences = data;
             })
-            .addCase(updateUserPreference.rejected, (state) => {
+            .addCase(updateUserPreference.rejected, (state,action:PayloadAction<any>) => {
                 state.isUserLoading = false;
+                const {message, data} = action.payload;
+                state.error_msg = message ?? "An error occurred";
+                state.userErrors = data ?? null;
+                state.success_msg = '';
             })
 
 

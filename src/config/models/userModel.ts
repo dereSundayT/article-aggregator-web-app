@@ -76,3 +76,8 @@ export const UserPreferenceProps = {
     authors : [],
     sources : []
 }
+export interface  UpdatePreferenceRespModel{
+    status:boolean;
+    message:string;
+    data:UserPreferenceModel;
+}

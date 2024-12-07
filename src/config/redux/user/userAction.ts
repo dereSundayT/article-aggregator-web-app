@@ -5,7 +5,7 @@ import {remoteUrl} from "../../url";
 import {
     LoginRespModel,
     RegistrationReqPayloadModel,
-    UpdatePreferencePayloadModel,
+    UpdatePreferencePayloadModel, UpdatePreferenceRespModel,
     UpdateUserProfilePayloadModel, UpdateUserProfileRespModel
 } from "../../models/userModel";
 
@@ -51,13 +51,17 @@ export const updateUserPreference = createAsyncThunk("user/updateUserPreference"
     const resp: ApiResponseModel = await patchRequest(payload.token, remoteUrl.preference, payload.data)
 
     if (resp.status) {
-        return resp.data
+        return resp as UpdatePreferenceRespModel
     }
     // return resp
     return thunkAPI.rejectWithValue(resp)
 
 })
 
+
+
+
+//Update User Profile
 export const updateUserProfile = createAsyncThunk("user/updateUserProfile", async (payload:UpdateUserProfilePayloadModel, thunkAPI) => {
     const resp: ApiResponseModel = await patchRequest(payload.token, remoteUrl.user, payload.data)
 
