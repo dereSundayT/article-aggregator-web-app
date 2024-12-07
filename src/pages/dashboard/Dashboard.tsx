@@ -1,10 +1,11 @@
 
 import React from "react";
 import {DashboardLayoutWrapper} from "./DashboardLayoutWrapper";
-import {ArticleFilter, ArticleItems} from "./article/components";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../config/redux/store";
-import {handleArticleModal} from "../../config/redux/articles/articleSlice";
+
+import {remoteUrl} from "../../config/url";
+import {ArticleFilter} from "./article/components";
+import {ArticleItems} from "./article/ArticleItems";
+
 
 
 
@@ -13,7 +14,7 @@ export const  Dashboard:React.FC = () =>{
     return (
         <DashboardLayoutWrapper pageTitle={"Articles Home"}>
             <ArticleFilter/>
-            <ArticleItems/>
+            <ArticleItems article_url={remoteUrl.articles} />
         </DashboardLayoutWrapper>
     )
 }

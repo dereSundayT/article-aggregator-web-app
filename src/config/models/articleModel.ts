@@ -1,5 +1,13 @@
 
-
+export interface PaginationProps {
+    totalItems: number;
+    from: number;
+    to: number;
+    links: LinksModel[],
+    handlePagination: any
+    previous?: string;
+    next?: string;
+}
 export interface CategoryModel {
     id: number;
     name: string;

@@ -1,25 +1,11 @@
 import {ChevronLeftIcon, ChevronRightIcon} from '@heroicons/react/20/solid'
 import React from "react";
-import {LinksModel} from "../../../../config/models/articleModel";
+import {PaginationProps} from "../../../../config/models/articleModel";
 import {Link} from "react-router-dom";
 
-const items = [
-    {id: 1, title: 'Back End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote'},
-    {id: 2, title: 'Front End Developer', department: 'Engineering', type: 'Full-time', location: 'Remote'},
-    {id: 3, title: 'User Interface Designer', department: 'Design', type: 'Full-time', location: 'Remote'},
-]
 
-// const inactive
 
-interface PaginationProps {
-    totalItems: number;
-    from: number;
-    to: number;
-    links: LinksModel[],
-    handlePagination: any
-    previous?: string;
-    next?: string;
-}
+
 
 export const Pagination: React.FC<PaginationProps> = ({
                                                           totalItems,

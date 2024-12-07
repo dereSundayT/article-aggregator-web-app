@@ -6,7 +6,7 @@ import {
     ArticleModel,
     ArticlePaginationModel
 } from "../../models/articleModel";
-import {fetchArticles} from "./articleAction";
+import {fetchArticles, fetchUserArticlePreference} from "./articleAction";
 
 
 export interface ArticleState {
@@ -14,14 +14,21 @@ export interface ArticleState {
     articleFilter : ArticleFilterModel;
     articles: ArticleModel[];
     paginationLinks: ArticlePaginationModel|null;
+    userArticlePreference: ArticleModel[];
+
     error: string|null;
     isArticleModalOpen: boolean;
 }
 
 const initialState: ArticleState = {
     isArticleLoading: false,
+
     articles: [],
     paginationLinks: null,
+
+    userArticlePreference: [],
+
+
     error: null,
     isArticleModalOpen: false,
     articleFilter:ArticleFilterProps
@@ -54,7 +61,21 @@ export const articleSlice = createSlice({
                 state.isArticleLoading = false;
                 state.error = action.error.message ?? 'Something went wrong';
             });
-        //End Get Articles
+        //fetchUserArticlePreference
+        builder
+            .addCase(fetchUserArticlePreference.pending, (state) => {
+                state.isArticleLoading = true;
+            })
+            .addCase(fetchUserArticlePreference.fulfilled, (state, action) => {
+                state.isArticleLoading = false;
+                const {data, pagination} = action.payload as ArticleApiResponseModel;
+                state.userArticlePreference = data;
+                state.paginationLinks = pagination;
+            })
+            .addCase(fetchUserArticlePreference.rejected, (state, action) => {
+                state.isArticleLoading = false;
+                state.error = action.error.message ?? 'Something went wrong';
+            });
     }
 })
 

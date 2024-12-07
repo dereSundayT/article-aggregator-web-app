@@ -6,6 +6,8 @@ export const remoteUrl ={
     register : `${baseUrl}/auth/register`,
 
     articles : `${baseUrl}/articles`,
+    user_article_preference : `${baseUrl}/articles/user-preference`,
+    //
     categories: `${baseUrl}/categories`,
     sources: `${baseUrl}/sources`,
     authors: `${baseUrl}/authors`,

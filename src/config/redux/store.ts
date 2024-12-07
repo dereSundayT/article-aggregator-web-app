@@ -17,7 +17,7 @@ import userReducer from './user/userSlice'
 const rootPersistConfig = {
     key: 'root',
     storage:storage,
-    whitelist: ["user"]
+    whitelist: ["user","app"]
 }
 
 
