@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Dialog, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react'
-import { ExclamationTriangleIcon } from '@heroicons/react/24/outline'
+
 
 interface ModalWrapperProps {
     children: React.ReactNode

@@ -1,5 +1,12 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {getUserPreference, loginUser, registerUser, updateUserPreference, updateUserProfile} from "./userAction";
+import {
+    getUserPreference,
+    loginUser,
+    logoutUser,
+    registerUser,
+    updateUserPreference,
+    updateUserProfile
+} from "./userAction";
 import {
     LoginRespModel,
     UpdatePreferenceRespModel, UpdateUserProfileRespModel,
@@ -17,6 +24,7 @@ export interface UserState {
     success_msg: string;
     userErrors: any;
     token: string;
+    showLogoutModal: boolean;
 
 }
 
@@ -28,6 +36,7 @@ const initialState: UserState = {
     success_msg: '',
     userErrors: null,
     token:'',
+    showLogoutModal: false
 
 }
 
@@ -43,7 +52,10 @@ export const userSlice = createSlice({
             state.error_msg = '';
             state.userErrors = null;
             state.success_msg = '';
-        }
+        },
+        handleLogoutModal: (state) => {
+            state.showLogoutModal = !state.showLogoutModal
+        },
     },
     extraReducers: (builder) => {
         //Register
@@ -156,11 +168,29 @@ export const userSlice = createSlice({
                 state.success_msg = '';
             })
 
+        //logoutUser
+        builder.addCase(logoutUser.pending, (state) => {
+            state.isUserLoading = true;
+            state.error_msg = '';
+            state.userErrors = null;
+            state.success_msg = '';
+        })
+        .addCase(logoutUser.fulfilled, (state, action) => {
+            return initialState
+        })
+        .addCase(logoutUser.rejected, (state, action: PayloadAction<any>) => {
+            const {message, data} = action.payload;
+            state.error_msg = message ?? "An error occurred";
+            state.userErrors = data ?? null;
+            state.success_msg = '';
+            state.isUserLoading = false;
+        })
+
 
     }
 })
 
 
-export const {clearErrorMessageFromBackend,clearAllMessages} = userSlice.actions
+export const {clearErrorMessageFromBackend,clearAllMessages,handleLogoutModal} = userSlice.actions
 
 export default userSlice.reducer

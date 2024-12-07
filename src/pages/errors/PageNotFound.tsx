@@ -16,7 +16,7 @@ export const PageNotFound: React.FC = () => {
         }else{
             setRedirectUrl(urls.home)
         }
-    }, []);
+    }, [token]);
 
     return (
 

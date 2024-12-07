@@ -16,7 +16,6 @@ export const ArticleItems: React.FC<ArticleItemsProps> = ({article_url}) => {
     const {
         articles,
         isArticleLoading,
-        error,
         paginationLinks,
         articleFilter
     } = useSelector((state: RootState) => state.articles)

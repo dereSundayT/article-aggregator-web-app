@@ -2,8 +2,8 @@ import React from "react";
 import {ArticleModel} from "../../../../config/models/articleModel";
 import {Link, useNavigate} from "react-router-dom";
 import {urls} from "../../../../config/url";
-import {useDispatch, useSelector} from "react-redux";
-import {AppDispatch, RootState} from "../../../../config/redux/store";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../../config/redux/store";
 import {handleArticleDetails} from "../../../../config/redux/articles/articleSlice";
 
 

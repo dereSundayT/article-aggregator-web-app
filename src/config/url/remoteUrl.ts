@@ -14,5 +14,6 @@ export const remoteUrl ={
     //User
     preference: `${baseUrl}/user/preference`,
     user: `${baseUrl}/user`,
+    logout: `${baseUrl}/user/logout`,
 
 }

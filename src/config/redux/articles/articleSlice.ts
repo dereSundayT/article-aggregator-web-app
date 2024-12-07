@@ -6,7 +6,7 @@ import {
     ArticleModel,
     ArticlePaginationModel
 } from "../../models/articleModel";
-import {fetchArticleDetails, fetchArticles, fetchUserArticlePreference} from "./articleAction";
+import {fetchArticleDetails, fetchArticles} from "./articleAction";
 
 
 export interface ArticleState {

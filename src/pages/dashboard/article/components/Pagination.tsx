@@ -24,12 +24,14 @@ export const Pagination: React.FC<PaginationProps> = ({
         <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
             <div className="flex flex-1 justify-between sm:hidden">
                 <Link
-                    to="#"
+                    to={"#0"}
+                    onClick={() => handlePagination(previous)}
                     className="pagination-previous-sm">
                     Previous
                 </Link>
                 <Link
-                    to="#"
+                    onClick={() => handlePagination(next)}
+                    to="#0"
                     className=""
                 >
                     Next
@@ -47,7 +49,7 @@ export const Pagination: React.FC<PaginationProps> = ({
                 <div>
                     <nav aria-label="Pagination" className="isolate inline-flex -space-x-px rounded-md shadow-sm">
                         <Link
-                            to="#"
+                            to="#0"
                             onClick={() => handlePagination(previous)}
                             className="pagination-previous">
                             <span className="sr-only">Previous</span>
@@ -72,7 +74,7 @@ export const Pagination: React.FC<PaginationProps> = ({
 
                         <Link
                             onClick={() => handlePagination(next)}
-                            to="#"
+                            to="#0"
                             className="pagination-next">
                             <span className="sr-only">Next</span>
                             <ChevronRightIcon aria-hidden="true" className="size-5"/>

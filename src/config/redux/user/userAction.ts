@@ -64,11 +64,20 @@ export const updateUserPreference = createAsyncThunk("user/updateUserPreference"
 //Update User Profile
 export const updateUserProfile = createAsyncThunk("user/updateUserProfile", async (payload:UpdateUserProfilePayloadModel, thunkAPI) => {
     const resp: ApiResponseModel = await patchRequest(payload.token, remoteUrl.user, payload.data)
-
     if (resp.status) {
         return resp as UpdateUserProfileRespModel
     }
     // return resp
     return thunkAPI.rejectWithValue(resp)
+})
 
+
+export const logoutUser = createAsyncThunk("user/logout", async (token: string, thunkAPI) => {
+    const resp: ApiResponseModel = await postRequest(token, remoteUrl.logout,null)
+
+    if (resp.status) {
+        return resp
+    }
+    // return resp
+    return thunkAPI.rejectWithValue(resp)
 })
