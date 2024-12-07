@@ -2,7 +2,7 @@ import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {getUserPreference, loginUser, registerUser, updateUserPreference, updateUserProfile} from "./userAction";
 import {
     LoginRespModel,
-    UpdatePreferenceRespModel,
+    UpdatePreferenceRespModel, UpdateUserProfileRespModel,
     UserModel,
     UserPreferenceModel,
     UserPreferenceProps
@@ -38,6 +38,11 @@ export const userSlice = createSlice({
         clearErrorMessageFromBackend: (state,action:PayloadAction<any>) => {
             const currentError = action.payload
             delete state.userErrors[currentError]
+        },
+        clearAllMessages :(state) => {
+            state.error_msg = '';
+            state.userErrors = null;
+            state.success_msg = '';
         }
     },
     extraReducers: (builder) => {
@@ -94,7 +99,7 @@ export const userSlice = createSlice({
                 state.userErrors = null;
                 state.success_msg = '';
             })
-            .addCase(updateUserProfile.fulfilled, (state, action) => {
+            .addCase(updateUserProfile.fulfilled, (state, action:PayloadAction<UpdateUserProfileRespModel>) => {
                 state.isUserLoading = false;
                 state.success_msg = action.payload.message;
                 state.user = action.payload.data;
@@ -156,6 +161,6 @@ export const userSlice = createSlice({
 })
 
 
-export const {clearErrorMessageFromBackend} = userSlice.actions
+export const {clearErrorMessageFromBackend,clearAllMessages} = userSlice.actions
 
 export default userSlice.reducer

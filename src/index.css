@@ -41,3 +41,11 @@
 .password-input{
     @apply block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6;
 }
+
+.nav-active{
+    @apply bg-gray-900 text-white  text-gray-300 hover:bg-gray-700 hover:text-white;
+}
+
+.nav-inactive{
+    @apply rounded-md px-3 py-2 text-sm font-medium;
+}

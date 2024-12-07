@@ -6,22 +6,24 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../config/redux/store";
 import {userProfileValidationSchema} from "../../../config/form/validation";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {UserModel} from "../../../config/models/userModel";
 import {updateUserProfile} from "../../../config/redux/user/userAction";
 import {ErrorMessage, Spinner, SuccessMessage} from "../../../component";
 import {clearErrorMessageFromBackend} from "../../../config/redux/user/userSlice";
 
 
-
+interface UpdateUserProfileProps {
+    email: string;
+    name: string;
+}
 
 export const UserProfile: React.FC = () => {
     // Setup useForm
-    const {register, handleSubmit, formState: {errors}} = useForm<UserModel>({resolver: yupResolver(userProfileValidationSchema)});
+    const {register, handleSubmit, formState: {errors}} = useForm<UpdateUserProfileProps>({resolver: yupResolver(userProfileValidationSchema)});
     const dispatch = useDispatch<AppDispatch>();
     // Get user state
     const {token,user,isUserLoading,success_msg,error_msg,userErrors} = useSelector((state: RootState) => state.user);
 
-    const onSubmit: SubmitHandler<UserModel> = (data) => {
+    const onSubmit: SubmitHandler<UpdateUserProfileProps> = (data) => {
         const {name} = data;
         dispatch(updateUserProfile({token, data:{name}}))
     }

@@ -5,6 +5,11 @@ import {urls} from "../../url";
 import {AuthorModel, CategoryModel, SourceModel} from "../../models/articleModel";
 import {fetchAdditionalData} from "./appAction";
 
+const userNavigation:NavigationModel[] = [
+    // {name: 'My Profile', href: urls.userProfile},
+    // {name: 'Preference Settings', href: urls.settings},
+    {name: 'Sign out', href: '#', current: false},
+]
 const navs:NavigationModel[] = [
     { name: 'Dashboard', href: urls.dashboard, current: true },
     { name: 'Articles', href: urls.articles, current: false },
@@ -14,6 +19,7 @@ const navs:NavigationModel[] = [
 
 export interface AppState {
     navigations: NavigationModel[]
+    userNavigation : NavigationModel[]
     categories: CategoryModel[]
     authors: AuthorModel[]
     sources: SourceModel[]
@@ -24,6 +30,7 @@ export interface AppState {
 
 const initialState: AppState = {
     navigations : navs,
+    userNavigation : userNavigation,
     categories:[],
     authors:[],
     sources:[],

@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {DashboardNav} from "./components";
-import {useSelector} from "react-redux";
-import {RootState} from "../../config/redux/store";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../config/redux/store";
 import {Navigate} from "react-router-dom";
 import {urls} from "../../config/url";
+import {clearAllMessages} from "../../config/redux/user/userSlice";
 
 
 interface DashboardLayoutWrapperProps {
@@ -13,6 +14,11 @@ interface DashboardLayoutWrapperProps {
 
 export const DashboardLayoutWrapper:React.FC<DashboardLayoutWrapperProps> = ({children,pageTitle}) => {
     const {token } = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(clearAllMessages())
+    }, []);
 
 
     if(!token){
