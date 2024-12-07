@@ -8,7 +8,7 @@ import { ModalWrapper } from "../../../../component";
 import { handleArticleFilter, handleArticleModal } from "../../../../config/redux/articles/articleSlice";
 import { remoteUrl } from "../../../../config/url";
 import {ArticleFilterCtaButton} from "./ArticleFilterCtaButton";
-import {GeneralInputField, TextInputField} from "../../../../component/form";
+import {GeneralInputField} from "../../../../component/form";
 
 export const ArticleFilter = () => {
     const { categories, sources, authors } = useSelector((state: RootState) => state.app);
@@ -59,15 +59,15 @@ export const ArticleFilter = () => {
                 <form className="grid grid-cols-4 gap-4 w-full h-full p-4" onSubmit={handleSubmit(searchArticle)}>
 
                     <div className="flex flex-col col-span-4">
-                        <TextInputField
+                        <GeneralInputField
                             //mt-1 p-2 border border-gray-300 rounded-md
                             defaultValue={articleFilter.keywords}
                             register={register}
-                            isRequired={false}
                             name={"keywords"}
                             label={"Keywords"}
                             error={""}
                             key={"keywords"}
+                            inputType={"text"}
                         />
                     </div>
 
@@ -76,7 +76,6 @@ export const ArticleFilter = () => {
                             defaultValue={articleFilter.from_date}
                             inputType={'date'}
                             register={register}
-                            isRequired={false}
                             name={"from_date"}
                             label={"From Date"}
                         />
@@ -87,7 +86,6 @@ export const ArticleFilter = () => {
                             defaultValue={articleFilter.to_date}
                             inputType={'date'}
                             register={register}
-                            isRequired={false}
                             name={"to_date"}
                             label={"To Date"}
                         />

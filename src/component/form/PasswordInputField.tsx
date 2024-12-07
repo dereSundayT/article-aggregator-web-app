@@ -3,15 +3,14 @@ import {Link} from "react-router-dom";
 import {FormError} from "./FormError";
 
 interface PasswordInputFieldProps {
-    showForgotPassword: boolean;
+    showForgotPasswordText: boolean;
     label: string;
     name: string;
     register: any;
     error?: string;
-    passwordWatch?: string;
 }
 
-export const PasswordInputField:React.FC<PasswordInputFieldProps> = ({showForgotPassword,label,register,name,error,passwordWatch}) => {
+export const PasswordInputField:React.FC<PasswordInputFieldProps> = ({showForgotPasswordText,label,register,name,error}) => {
     const [showPassword, setShowPassword] = useState(false);
 
 
@@ -24,7 +23,7 @@ export const PasswordInputField:React.FC<PasswordInputFieldProps> = ({showForgot
             <div className="flex items-center justify-between">
                 <label htmlFor="password" className="block text-sm/6 font-medium text-gray-900">{label}</label>
                 {
-                    showForgotPassword &&
+                    showForgotPasswordText &&
                     <div className="text-sm">
                         <Link to="#" className="font-semibold text-indigo-600 hover:text-indigo-500">Forgot password?</Link>
                     </div>
@@ -35,24 +34,13 @@ export const PasswordInputField:React.FC<PasswordInputFieldProps> = ({showForgot
                 <input
                     id={name}
                     type={showPassword ? "text" : "password"}
-                    {...register(name,{
-                        required: {
-                            value: true,
-                            message: `${label} is required`
-                        },
-                        minLength: {
-                            value: 8,
-                            message: `${label} must be at least 8 characters`
-                        },
-                        validate: name === "password_confirmation" ? (value:any) => value === passwordWatch || "Passwords do not match" : undefined
-
-                    })}
-                    className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
+                    {...register(name)}
+                    className="password-input"
                 />
 
                 <button
                     type="button"
-                    onClick={togglePasswordVisibility}
+                    onClick={() => togglePasswordVisibility()}
                     className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
                 >
                     {showPassword ?

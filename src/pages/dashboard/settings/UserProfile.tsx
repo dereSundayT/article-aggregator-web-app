@@ -1,8 +1,7 @@
 import React from "react";
-import {ChevronDownIcon} from '@heroicons/react/16/solid'
 import {DashboardLayoutWrapper} from "../DashboardLayoutWrapper";
 import {SubmitHandler, useForm} from "react-hook-form";
-import {Button, EmailInputField, TextInputField} from "../../../component/form";
+import {Button, EmailInputField, GeneralInputField} from "../../../component/form";
 
 
 interface Inputs  {
@@ -28,27 +27,33 @@ export const UserProfile: React.FC = () => {
 
                         <div className="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
 
-                            <TextInputField
+                            <GeneralInputField
                                 label={"First name"}
                                 name={"first_name"}
                                 register={register}
-                                isRequired={true}
                                 key={"first_name"}
                                 error={errors.first_name?.message}
-                                minLength={3}
+                                inputType={"text"}
                             />
 
-                            <TextInputField
+                            <GeneralInputField
                                 label={"Last name"}
                                 name={"last_name"}
                                 register={register}
-                                isRequired={true}
                                 key={"last_name"}
                                 error={errors.last_name?.message}
-                                minLength={3}
+                                inputType={"text"}
                             />
 
-                            <EmailInputField label={"Email address"} name={"email"} register={register} isRequired={true} key={"email"} error={errors.email?.message}/>
+                            <GeneralInputField
+                                label={"Email address"}
+                                name={"email"}
+                                register={register}
+                                key={"email"}
+                                error={errors.email?.message}
+                                inputType={"email"}
+                            />
+
 
                         </div>
                     </div>

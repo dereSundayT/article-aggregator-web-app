@@ -1,21 +1,33 @@
 import React from "react";
-import { urls } from "../../config/url";
-import { AuthLayoutWrapper } from "./layout/AuthLayoutWrapper";
-import { Button, GeneralInputField, PasswordInputField } from "../../component/form";
-import { useForm } from "react-hook-form";
-import { RegistrationReqPayloadModel } from "../../config/models/userModel";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "../../config/redux/store";
-import { registerUser } from "../../config/redux/user/userAction";
-import { Spinner } from "../../component";
+import {urls} from "../../config/url";
+import {AuthLayoutWrapper} from "./layout/AuthLayoutWrapper";
+import {Button, GeneralInputField, PasswordInputField} from "../../component/form";
+import {useForm} from "react-hook-form";
+import {RegistrationReqPayloadModel} from "../../config/models/userModel";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../config/redux/store";
+import {registerUser} from "../../config/redux/user/userAction";
+import {ErrorMessage, Spinner} from "../../component";
 import {useNavigate} from "react-router-dom";
+import {yupResolver} from '@hookform/resolvers/yup';
+import {registerValidationSchema} from "../../config/form/validation";
+
 
 export const Register: React.FC = () => {
-    const { isUserLoading,userErrors,error_msg } = useSelector((state: RootState) => state.user);
-    const { register, handleSubmit,watch, formState: { errors }, reset } = useForm<RegistrationReqPayloadModel>();
-    const passwordWatch = watch('password');
-    const dispatch = useDispatch<AppDispatch>();
+    //
     const navigate = useNavigate()
+    //UseForm Setup
+    const {
+        register,
+        handleSubmit,
+        formState: {errors},
+        reset
+    } = useForm<RegistrationReqPayloadModel>({resolver: yupResolver(registerValidationSchema)});
+    //Get User State
+    const {isUserLoading, userErrors, error_msg} = useSelector((state: RootState) => state.user);
+    //Dispatch Setup
+    const dispatch = useDispatch<AppDispatch>();
+
 
     const onSubmit = async (data: RegistrationReqPayloadModel) => {
         const result = await dispatch(registerUser(data));
@@ -32,32 +44,59 @@ export const Register: React.FC = () => {
             actionLink={urls.login}
             actionLinkText={"Login"}>
 
+
+            {error_msg && <ErrorMessage message={error_msg}/>}
+
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-                <GeneralInputField inputType={'text'} register={register} isRequired={true} name={'name'} label={'Name'}
-                                   error={errors.name?.message ?? ''}/>
-                <GeneralInputField inputType={'email'} register={register} isRequired={true} name={'email'}
-                                   label={'Email address'} error={errors.email?.message ?? ''}/>
+
+                <GeneralInputField
+                    inputType={'text'}
+                    register={register}
+                    name={'name'}
+                    label={'Name'}
+                    error={
+                        errors.name?.message
+                            ?
+                            errors.name?.message
+                            :
+                            userErrors?.name?.[0] ?? ''
+                    }
+                />
+
+                <GeneralInputField
+                    inputType={'email'}
+                    register={register}
+                    name={'email'}
+                    label={'Email address'}
+                    error={
+                        errors.email?.message
+                            ?
+                            errors.email?.message
+                            :
+                            userErrors?.email?.[0] ?? ''
+                    }
+                />
 
                 <PasswordInputField
-                    showForgotPassword={false}
+                    showForgotPasswordText={false}
                     register={register}
                     label={'Password'}
                     name={"password"}
                     error={
-                    errors.password?.message
-                        ?
                         errors.password?.message
-                        :
-                        userErrors?.password?.[0] ?? ''
-                }
+                            ?
+                            errors.password?.message
+                            :
+                            userErrors?.password?.[0] ?? ''
+                    }
                 />
+
                 <PasswordInputField
-                    showForgotPassword={false}
+                    showForgotPasswordText={false}
                     register={register}
                     label={'Confirm Password'}
                     name={"password_confirmation"}
                     error={errors.password_confirmation?.message ?? ''}
-                    passwordWatch={passwordWatch}
                 />
 
                 <div className={'mt-3'}>

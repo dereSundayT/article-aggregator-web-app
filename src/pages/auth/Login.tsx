@@ -4,7 +4,7 @@ import {urls} from "../../config/url";
 import {useDispatch, useSelector} from "react-redux";
 import {useNavigate} from "react-router-dom";
 import {AppDispatch, RootState} from "../../config/redux/store";
-import {Spinner, SuccessMessage} from "../../component";
+import {ErrorMessage, Spinner, SuccessMessage} from "../../component";
 import {useForm} from "react-hook-form";
 import {LoginReqPayloadModel} from "../../config/models/userModel";
 import {loginUser} from "../../config/redux/user/userAction";
@@ -33,13 +33,19 @@ export const Login: React.FC = () => {
             actionLinkText={"Register"}>
 
             {success_msg && <SuccessMessage message={success_msg}/>}
+            {errors && <ErrorMessage message={error_msg}/>}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                <GeneralInputField inputType={'email'} register={register} isRequired={true} name={'email'}
-                                   label={'Email address'} error={errors.email?.message}/>
+                <GeneralInputField
+                    inputType={'email'}
+                    register={register}
+                    name={'email'}
+                    label={'Email address'}
+                    error={errors.email?.message}
+                />
 
                 <PasswordInputField
-                    showForgotPassword={true}
+                    showForgotPasswordText={true}
                     register={register}
                     label={'Password'}
                     name={"password"}
