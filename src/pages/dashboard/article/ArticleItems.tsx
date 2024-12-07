@@ -6,7 +6,7 @@ import {fetchArticles} from "../../../config/redux/articles/articleAction";
 
 
 import {fetchAdditionalData} from "../../../config/redux/app/appAction";
-import {ArticleEmptyState,ArticleEmptyLoadingState,Pagination,ArticleItem} from "./components";
+import {ArticleEmptyState, ArticleEmptyLoadingState, Pagination, ArticleItem} from "./components";
 
 interface ArticleItemsProps {
     article_url: string
@@ -38,35 +38,35 @@ export const ArticleItems: React.FC<ArticleItemsProps> = ({article_url}) => {
 
     return (
         <>
-
             {
-                articles.length === 0 ?<ArticleEmptyState/>
+                isArticleLoading
+                    ?
+                    <div className="article-wrapper">
+                        <ArticleEmptyLoadingState totalNo={12}/>
+                    </div>
                     :
-                    <>
-                        <div className="mx-auto mb-10 grid  max-w-2xl grid-cols-1  gap-y-16  gap-x-8 pt-1 sm:mt-1 sm:pt-1 lg:mx-0  lg:max-w-none lg:grid-cols-3">
-                            {
-                                isArticleLoading
-                                    ?
-                                    <ArticleEmptyLoadingState totalNo={12}/>
-                                    :
-                                        articles.map((article) => (
-                                            <ArticleItem key={article.id} article={article}/>
-                                        ))
+                    articles.length === 0
+                        ?
+                        <ArticleEmptyState/>
+                        :
+                        <div className="article-wrapper">
+                            {articles.map((article) => (
+                                <ArticleItem key={article.id} article={article}/>
+                            ))
                             }
                         </div>
-                        <Pagination
-                            totalItems={paginationLinks?.total ?? 0}
-                            from={paginationLinks?.from ?? 0}
-                            to={paginationLinks?.to ?? 0}
-                            links={paginationLinks?.links ?? []}
-                            handlePagination={handlePagination}
-                            previous={paginationLinks?.prev_page_url ?? ""}
-                            next={paginationLinks?.next_page_url ?? ""}
-                        />
-                    </>
 
             }
 
+            <Pagination
+                totalItems={paginationLinks?.total ?? 0}
+                from={paginationLinks?.from ?? 0}
+                to={paginationLinks?.to ?? 0}
+                links={paginationLinks?.links ?? []}
+                handlePagination={handlePagination}
+                previous={paginationLinks?.prev_page_url ?? ""}
+                next={paginationLinks?.next_page_url ?? ""}
+            />
         </>
 
     )

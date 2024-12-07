@@ -59,6 +59,17 @@ export interface ArticleFilterModel {
     author_ids: number[];
 }
 
+export interface ArticleDetailReqPayloadModel{
+    token :string,
+    article_id: number
+}
+
+export interface ArticleDetailRespModel{
+    status: boolean,
+    message: string,
+    data: ArticleModel
+}
+
 export interface ArticleReqPayloadModel{
     url:string,
     token :string,

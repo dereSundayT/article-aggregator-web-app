@@ -6,13 +6,14 @@ import {
     ArticleModel,
     ArticlePaginationModel
 } from "../../models/articleModel";
-import {fetchArticles, fetchUserArticlePreference} from "./articleAction";
+import {fetchArticleDetails, fetchArticles, fetchUserArticlePreference} from "./articleAction";
 
 
 export interface ArticleState {
     isArticleLoading: boolean;
     articleFilter : ArticleFilterModel;
     articles: ArticleModel[];
+    article: ArticleModel | null;
     paginationLinks: ArticlePaginationModel|null;
     userArticlePreference: ArticleModel[];
 
@@ -24,6 +25,7 @@ const initialState: ArticleState = {
     isArticleLoading: false,
 
     articles: [],
+    article: null,
     paginationLinks: null,
 
     userArticlePreference: [],
@@ -43,6 +45,9 @@ export const articleSlice = createSlice({
         },
         handleArticleFilter: (state, action: PayloadAction<ArticleFilterModel>) => {
             state.articleFilter = action.payload;
+        },
+        handleArticleDetails: (state, action: PayloadAction<ArticleModel>) => {
+            state.article = action.payload;
         }
     },
     extraReducers: (builder) => {
@@ -61,18 +66,18 @@ export const articleSlice = createSlice({
                 state.isArticleLoading = false;
                 state.error = action.error.message ?? 'Something went wrong';
             });
-        //fetchUserArticlePreference
+
+
+        //fetchArticleDetails
         builder
-            .addCase(fetchUserArticlePreference.pending, (state) => {
+            .addCase(fetchArticleDetails.pending, (state) => {
                 state.isArticleLoading = true;
             })
-            .addCase(fetchUserArticlePreference.fulfilled, (state, action) => {
+            .addCase(fetchArticleDetails.fulfilled, (state, action) => {
                 state.isArticleLoading = false;
-                const {data, pagination} = action.payload as ArticleApiResponseModel;
-                state.userArticlePreference = data;
-                state.paginationLinks = pagination;
+                state.article = action.payload.data;
             })
-            .addCase(fetchUserArticlePreference.rejected, (state, action) => {
+            .addCase(fetchArticleDetails.rejected, (state, action) => {
                 state.isArticleLoading = false;
                 state.error = action.error.message ?? 'Something went wrong';
             });
@@ -80,6 +85,6 @@ export const articleSlice = createSlice({
 })
 
 
-export const {handleArticleModal,handleArticleFilter} = articleSlice.actions
+export const {handleArticleModal,handleArticleFilter,handleArticleDetails} = articleSlice.actions
 
 export default articleSlice.reducer

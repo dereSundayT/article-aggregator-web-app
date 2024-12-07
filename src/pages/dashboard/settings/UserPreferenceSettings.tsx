@@ -63,7 +63,7 @@ export const UserPreferenceSettings: React.FC = () => {
                         </div>
                     </div>
                 </div>
-
+                {success_msg && <SuccessMessage message={success_msg} />}
                 <div className="mt-6 flex items-center justify-end gap-x-6">
                     {
                         isUserLoading?
