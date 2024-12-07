@@ -16,7 +16,7 @@ export const ArticleDetails: React.FC = () => {
         if (id) {
             dispatch(fetchArticleDetails({ token, article_id: parseInt(id) }));
         }
-    }, [token,article, id]);
+    }, [token,article, id,dispatch]);
 
 
 

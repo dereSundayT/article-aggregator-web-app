@@ -33,12 +33,8 @@ export const DashboardNav: React.FC = () => {
                     <div className="flex h-16 items-center justify-between">
 
                         <div className="flex items-center">
-                            <div className="shrink-0">
-                                <img
-                                    alt="Your Company"
-                                    src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=500"
-                                    className="size-8"
-                                />
+                            <div className="shrink-0 text-white outline outline-1 p-2">
+                              Article Aggre
                             </div>
 
                             <div className="hidden md:block">
@@ -134,14 +130,6 @@ export const DashboardNav: React.FC = () => {
                                 <div className="text-base/5 font-medium text-white">{user?.name}</div>
                                 <div className="text-sm font-medium text-gray-400">{user?.email}</div>
                             </div>
-                            <button
-                                type="button"
-                                className="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                            >
-                                <span className="absolute -inset-1.5"/>
-                                <span className="sr-only">View notifications</span>
-                                <BellIcon aria-hidden="true" className="size-6"/>
-                            </button>
                         </div>
                         <div className="mt-3 space-y-1 px-2">
 

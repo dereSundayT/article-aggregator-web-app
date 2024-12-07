@@ -23,8 +23,8 @@ export const UserPreferenceSettings: React.FC = () => {
     };
 
     useEffect(() => {
-        dispatch(fetchAdditionalData(token));
         dispatch(getUserPreference(token));
+        dispatch(fetchAdditionalData(token));
     }, [dispatch, token]);
 
     return (

@@ -20,11 +20,13 @@ export const ArticleFilter = () => {
 
     const [selectedCategories, setSelectedCategories] = useState<number[]>(articleFilter.category_ids);
     const [selectedSources, setSelectedSources] = useState<number[]>(articleFilter.source_ids);
+    const [selectedAuthors, setSelectedAuthors] = useState<number[]>(articleFilter.author_ids);
 
     useEffect(() => {
         setValue("category_ids", selectedCategories);
         setValue("source_ids", selectedSources);
-    }, [selectedCategories, selectedSources, setValue]);
+        setValue("author_ids", selectedAuthors);
+    }, [selectedAuthors, selectedCategories, selectedSources, setValue]);
 
     const handleCategoryChange = (id: number) => {
         setSelectedCategories(prev =>
@@ -35,6 +37,12 @@ export const ArticleFilter = () => {
     const handleSourceChange = (id: number) => {
         setSelectedSources(prev =>
             prev.includes(id) ? prev.filter(sourceId => sourceId !== id) : [...prev, id]
+        );
+    };
+
+    const handleAuthorChange = (id: number) => {
+        setSelectedAuthors(prev =>
+            prev.includes(id) ? prev.filter(authorId => authorId !== id) : [...prev, id]
         );
     };
 
@@ -108,6 +116,26 @@ export const ArticleFilter = () => {
                         </div>
                     </div>
 
+
+                    <div className="flex flex-col col-span-2">
+                        <label className="text-sm font-semibold text-gray-900">Author</label>
+                        <div className="mt-1 p-2 border border-gray-300 rounded-md">
+                            {authors && authors.length > 0 && authors.map(author => (
+                                <div key={author.id}>
+                                    <input
+                                        type="checkbox"
+                                        id={`author_${author.id}`}
+                                        value={author.id}
+                                        checked={selectedAuthors.includes(author.id)}
+                                        onChange={() => handleAuthorChange(author.id)}
+                                    />
+                                    <label htmlFor={`source_${author.id}`} className="ml-2">{author.name}</label>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+
                     <div className="flex flex-col col-span-2">
                         <label className="text-sm font-semibold text-gray-900">Source</label>
                         <div className="mt-1 p-2 border border-gray-300 rounded-md">
@@ -126,8 +154,11 @@ export const ArticleFilter = () => {
                         </div>
                     </div>
 
+
+
                     <div className="flex flex-col col-span-4">
-                        <button className="mt-4 bg-blue-500 text-white p-2 rounded-md" type="submit">Apply Filter</button>
+                        <button className="mt-4 bg-blue-500 text-white p-2 rounded-md" type="submit">Apply Filter
+                        </button>
                     </div>
                 </form>
             </ModalWrapper>

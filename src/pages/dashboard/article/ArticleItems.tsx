@@ -32,7 +32,7 @@ export const ArticleItems: React.FC<ArticleItemsProps> = ({article_url}) => {
     useEffect(() => {
         dispatch(fetchAdditionalData(token))
         dispatch(fetchArticles({url: article_url, token, params: null}))
-    }, [])
+    }, [article_url, dispatch, token])
 
 
     return (
