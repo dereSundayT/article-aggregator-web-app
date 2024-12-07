@@ -28,7 +28,12 @@ const initialState: UserState = {
 export const userSlice = createSlice({
     name: 'user',
     initialState,
-    reducers: {},
+    reducers: {
+        clearErrorMessageFromBackend: (state,action:PayloadAction<any>) => {
+            const currentError = action.payload
+            delete state.userErrors[currentError]
+        }
+    },
     extraReducers: (builder) => {
         //Register
         builder
@@ -112,6 +117,6 @@ export const userSlice = createSlice({
 })
 
 
-export const {} = userSlice.actions
+export const {clearErrorMessageFromBackend} = userSlice.actions
 
 export default userSlice.reducer

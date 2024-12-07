@@ -9,9 +9,10 @@ interface GeneralInputFieldProps {
     label: string
     error?: string
     defaultValue ?: string
+    onChange ?: any
 }
 
-export const GeneralInputField:React.FC<GeneralInputFieldProps> = ({register,name,label,error,defaultValue,inputType="text"}) => {
+export const GeneralInputField:React.FC<GeneralInputFieldProps> = ({register,name,label,error,defaultValue,onChange,inputType}) => {
     return (
         <>
             <div className="sm:col-span-3">
@@ -22,7 +23,9 @@ export const GeneralInputField:React.FC<GeneralInputFieldProps> = ({register,nam
 
                     <input
                         defaultValue={defaultValue}
-                        {...register(name)}
+                        {...register(name,{
+                            onChange: onChange ? (e:any) => onChange(name,e.target.value) : undefined
+                        })}
                         id={name}
                         type={inputType}
                         className={`${error ? 'input-error':'input-valid'} input`}

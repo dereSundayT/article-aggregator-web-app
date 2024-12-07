@@ -9,12 +9,18 @@ import {useForm} from "react-hook-form";
 import {LoginReqPayloadModel} from "../../config/models/userModel";
 import {loginUser} from "../../config/redux/user/userAction";
 import {Button, GeneralInputField, PasswordInputField} from "../../component/form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {loginValidationSchema} from "../../config/form/validation";
 
 export const Login: React.FC = () => {
+    // get user state
     const {isUserLoading, userErrors, error_msg, success_msg} = useSelector((state: RootState) => state.user);
-    const {register, handleSubmit, formState: {errors}, reset} = useForm<LoginReqPayloadModel>();
-    const navigate = useNavigate()
     const dispatch = useDispatch<AppDispatch>();
+    // setup useForm
+    const {register, handleSubmit, formState: {errors}, reset} = useForm<LoginReqPayloadModel>({resolver: yupResolver(loginValidationSchema)});
+   // setup useNavigate
+    const navigate = useNavigate()
+
 
     const onSubmit = async (data: LoginReqPayloadModel) => {
         const result = await dispatch(loginUser(data));
@@ -33,7 +39,7 @@ export const Login: React.FC = () => {
             actionLinkText={"Register"}>
 
             {success_msg && <SuccessMessage message={success_msg}/>}
-            {errors && <ErrorMessage message={error_msg}/>}
+            {error_msg && <ErrorMessage message={error_msg}/>}
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <GeneralInputField

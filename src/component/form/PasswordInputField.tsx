@@ -8,9 +8,10 @@ interface PasswordInputFieldProps {
     name: string;
     register: any;
     error?: string;
+    onChange ?: any
 }
 
-export const PasswordInputField:React.FC<PasswordInputFieldProps> = ({showForgotPasswordText,label,register,name,error}) => {
+export const PasswordInputField:React.FC<PasswordInputFieldProps> = ({showForgotPasswordText,label,register,name,error,onChange}) => {
     const [showPassword, setShowPassword] = useState(false);
 
 
@@ -34,7 +35,9 @@ export const PasswordInputField:React.FC<PasswordInputFieldProps> = ({showForgot
                 <input
                     id={name}
                     type={showPassword ? "text" : "password"}
-                    {...register(name)}
+                    {...register(name,{
+                        onChange: onChange ? (e:any) => onChange(name,e.target.value) : undefined
+                    })}
                     className="password-input"
                 />
 

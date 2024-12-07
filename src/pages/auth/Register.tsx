@@ -11,6 +11,7 @@ import {ErrorMessage, Spinner} from "../../component";
 import {useNavigate} from "react-router-dom";
 import {yupResolver} from '@hookform/resolvers/yup';
 import {registerValidationSchema} from "../../config/form/validation";
+import {clearErrorMessageFromBackend} from "../../config/redux/user/userSlice";
 
 
 export const Register: React.FC = () => {
@@ -27,6 +28,12 @@ export const Register: React.FC = () => {
     const {isUserLoading, userErrors, error_msg} = useSelector((state: RootState) => state.user);
     //Dispatch Setup
     const dispatch = useDispatch<AppDispatch>();
+
+
+
+    const clearErrorMessage = (fieldName:string,fieldValue:any) => {
+        dispatch(clearErrorMessageFromBackend(fieldName))
+    }
 
 
     const onSubmit = async (data: RegistrationReqPayloadModel) => {
@@ -54,6 +61,7 @@ export const Register: React.FC = () => {
                     register={register}
                     name={'name'}
                     label={'Name'}
+                    onChange={userErrors?.name && clearErrorMessage}
                     error={
                         errors.name?.message
                             ?
@@ -68,6 +76,7 @@ export const Register: React.FC = () => {
                     register={register}
                     name={'email'}
                     label={'Email address'}
+                    onChange={userErrors?.email && clearErrorMessage}
                     error={
                         errors.email?.message
                             ?
@@ -82,6 +91,7 @@ export const Register: React.FC = () => {
                     register={register}
                     label={'Password'}
                     name={"password"}
+                    onChange={userErrors?.password && clearErrorMessage}
                     error={
                         errors.password?.message
                             ?
