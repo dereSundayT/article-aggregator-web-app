@@ -1,6 +1,9 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {Header} from "../component";
 import {Link} from "react-router-dom";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "../../../config/redux/store";
+import {clearAllMessages} from "../../../config/redux/user/userSlice";
 
 
 interface AuthLayoutWrapperProps {
@@ -13,6 +16,12 @@ interface AuthLayoutWrapperProps {
 
 
 export const AuthLayoutWrapper: React.FC<AuthLayoutWrapperProps> = ({children,pageTitle,callToActionText,actionLinkText,actionLink}) => {
+  const dispatch = useDispatch<AppDispatch>();
+
+    useEffect(() => {
+        dispatch(clearAllMessages())
+    }, [dispatch]);
+
 
     return (
         <div className="bg-white">
