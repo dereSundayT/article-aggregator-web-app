@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {urls} from "../../config/url";
 import {AuthLayoutWrapper} from "./layout/AuthLayoutWrapper";
 import {Button, GeneralInputField, PasswordInputField} from "../../component/form";
@@ -11,12 +11,13 @@ import {ErrorMessage, Spinner} from "../../component";
 import {useNavigate} from "react-router-dom";
 import {yupResolver} from '@hookform/resolvers/yup';
 import {registerValidationSchema} from "../../config/form/validation";
-import {clearErrorMessageFromBackend} from "../../config/redux/user/userSlice";
+import {clearAllMessages, clearErrorMessageFromBackend} from "../../config/redux/user/userSlice";
 
 
 export const Register: React.FC = () => {
     //
     const navigate = useNavigate()
+
     //UseForm Setup
     const {
         register,
@@ -43,6 +44,10 @@ export const Register: React.FC = () => {
             navigate(urls.login);
         }
     };
+
+    useEffect(() => {
+        dispatch(clearAllMessages())
+    }, [dispatch]);
 
     return (
         <AuthLayoutWrapper

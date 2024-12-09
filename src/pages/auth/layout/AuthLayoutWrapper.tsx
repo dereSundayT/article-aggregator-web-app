@@ -1,9 +1,10 @@
 import React, {useEffect} from "react";
 import {Header} from "../component";
-import {Link} from "react-router-dom";
-import {useDispatch} from "react-redux";
-import {AppDispatch} from "../../../config/redux/store";
+import {Link, Navigate} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AppDispatch, RootState} from "../../../config/redux/store";
 import {clearAllMessages} from "../../../config/redux/user/userSlice";
+import {urls} from "../../../config/url";
 
 
 interface AuthLayoutWrapperProps {
@@ -15,13 +16,13 @@ interface AuthLayoutWrapperProps {
 }
 
 
-export const AuthLayoutWrapper: React.FC<AuthLayoutWrapperProps> = ({children,pageTitle,callToActionText,actionLinkText,actionLink}) => {
-  const dispatch = useDispatch<AppDispatch>();
+export const AuthLayoutWrapper: React.FC<AuthLayoutWrapperProps> = ({children,pageTitle,callToActionText,actionLinkText,actionLink}:AuthLayoutWrapperProps) => {
+  const {token} = useSelector((state: RootState) => state.user);
 
-    useEffect(() => {
-        dispatch(clearAllMessages())
-    }, [dispatch]);
 
+  if(token) {
+      return <Navigate to={urls.dashboard}/>
+  }
 
     return (
         <div className="bg-white">

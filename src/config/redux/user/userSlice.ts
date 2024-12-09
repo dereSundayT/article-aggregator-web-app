@@ -179,11 +179,7 @@ export const userSlice = createSlice({
             return initialState
         })
         .addCase(logoutUser.rejected, (state, action: PayloadAction<any>) => {
-            const {message, data} = action.payload;
-            state.error_msg = message ?? "An error occurred";
-            state.userErrors = data ?? null;
-            state.success_msg = '';
-            state.isUserLoading = false;
+            return initialState
         })
 
 
