@@ -1,4 +1,6 @@
 import React from "react";
+import {Link} from "react-router-dom";
+import {urls} from "../../../../config/url";
 
 export const ArticleEmptyState: React.FC = () => {
     return (
@@ -23,6 +25,7 @@ export const ArticleEmptyState: React.FC = () => {
             <p className="text-sm text-slate-500">
                 Try adjusting your filters or search criteria.
             </p>
+            <Link to={urls.dashboard} className={'text-blue-700 underline mt-3'}>Take me back</Link>
         </div>
     );
 };

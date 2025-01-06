@@ -72,6 +72,7 @@ export const articleSlice = createSlice({
         builder
             .addCase(fetchArticleDetails.pending, (state) => {
                 state.isArticleLoading = true;
+                state.article = null;
             })
             .addCase(fetchArticleDetails.fulfilled, (state, action) => {
                 state.isArticleLoading = false;
@@ -79,6 +80,7 @@ export const articleSlice = createSlice({
             })
             .addCase(fetchArticleDetails.rejected, (state, action) => {
                 state.isArticleLoading = false;
+                state.article = null;
                 state.error = action.error.message ?? 'Something went wrong';
             });
     }

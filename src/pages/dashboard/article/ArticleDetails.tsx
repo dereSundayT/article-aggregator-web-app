@@ -3,8 +3,10 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppDispatch, RootState} from "../../../config/redux/store";
 import { DashboardLayoutWrapper } from "../DashboardLayoutWrapper";
 import {fetchArticleDetails} from "../../../config/redux/articles/articleAction";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {ArticleEmptyLoadingState, ArticleEmptyState} from "./components";
+import {urls} from "../../../config/url";
+import {BackArrowIcon} from "../../../component";
 
 export const ArticleDetails: React.FC = () => {
     const { article ,isArticleLoading} = useSelector((state: RootState) => state.articles);
@@ -16,9 +18,8 @@ export const ArticleDetails: React.FC = () => {
         if (id) {
             dispatch(fetchArticleDetails({ token, article_id: parseInt(id) }));
         }
-    }, [token,article, id,dispatch]);
-
-
+    }, [token, id, dispatch]);
+    
 
     return (
         <DashboardLayoutWrapper pageTitle={article?.title ?? ""}>
@@ -31,8 +32,11 @@ export const ArticleDetails: React.FC = () => {
                     <ArticleEmptyState/>
                     :
                     <div className="max-w-4xl mx-auto p-4">
+                        <Link to={urls.dashboard}>
+                            <BackArrowIcon/> Back
+                        </Link>
                         <div className="mb-4">
-                            <h1 className="text-3xl font-bold"></h1>
+
                             <p className="text-gray-500">{article.published_at}</p>
                         </div>
 
